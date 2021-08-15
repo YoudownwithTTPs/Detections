@@ -1,10 +1,10 @@
-index="sysmon" source="WinEventLog:Sysmon" EventCode=3 DestinationPort=443 
-Image IN (C:\\Users\\*, C:\\ProgramData\\*, C:\\Windows\\System32\\*, C:\\Windows\\Syswow64\\*, C:\\Windows\\Temp*)
-| bin span=1m _time
-| mvexpand User
-| search (User!="SYSTEM" AND User!="NT AUTHORITY\\*")
-| stats count by _time, SourceIp, User, Image
-| where count < 3
-| bin span=15m _time
-| stats count by _time, SourceIp, User, Image
-| where count > 13
+index="sysmon" source="WinEventLog:Sysmon" EventCode=3 DestinationPort=443 OR DestinationPort=80 ```All successful http/s connection to ports 80 or 443```
+Image IN (C:\\Users\\*, C:\\ProgramData\\*, C:\\Windows\\System32\\*, C:\\Windows\\Syswow64\\*, C:\\Windows\\Temp*) ```Search is only looking for processes connecting to port 80 or 443 that are running from these paths```
+| bin span=1m _time ```search starts by looking at the events within a 1 minute window```
+| mvexpand User ```expands the multi-value User field so we can filter effectively on the field values``` 
+| search (User!="SYSTEM" AND User!="NT AUTHORITY\\*") ```Only include events from process running in the context of the user```
+| stats count by _time, SourceIp, User, Image ```Run stats to carve out process data by SourceIp, User and time``` 
+| where count < 4 ```Only report of those processes that connected to port 80 or 443 three times or less in one minute - 20 sec beacon interval```
+| bin span=15m _time ```Next, zoom out and look at the same data set but this time for a period of 15 mins```
+| stats count by _time, SourceIp, User, Image ```Run the same stats as before```
+| where count > 13 ```Only this time, tell me only if those same processes that passed the first stats 
