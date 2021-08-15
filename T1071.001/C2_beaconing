@@ -4,7 +4,7 @@ Image IN (C:\\Users\\*, C:\\ProgramData\\*, C:\\Windows\\System32\\*, C:\\Window
 | mvexpand User ```expands the multi-value User field so we can filter effectively on the field values``` 
 | search (User!="SYSTEM" AND User!="NT AUTHORITY\\*") ```Only include events from process running in the context of the user```
 | stats count by _time, SourceIp, User, Image ```Run stats to carve out process data by SourceIp, User and time``` 
-| where count < 4 ```Only report of those processes that connected to port 80 or 443 three times or less in one minute - 20 sec beacon interval```
+| where count < 3 ```Only report of those processes that connected to port 80 or 443 three times or less in one minute - 30 sec beacon interval```
 | bin span=15m _time ```Next, zoom out and look at the same data set but this time for a period of 15 mins```
 | stats count by _time, SourceIp, User, Image ```Run the same stats as before```
 | where count > 11 ```Only this time, tell me only if those same processes that passed the first stats has continued to do so for twelve times or more over the last 15 mins```
