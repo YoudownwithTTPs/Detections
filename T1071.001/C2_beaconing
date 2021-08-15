@@ -1,4 +1,5 @@
-index="sysmon" source="WinEventLog:Sysmon" EventCode=3 DestinationPort=443
+index="sysmon" source="WinEventLog:Sysmon" EventCode=3 DestinationPort=443 
+Image IN (C:\\Users\\*, C:\\ProgramData\\*, C:\\Windows\\System32\\*, C:\\Windows\\Syswow64\\*, C:\\Windows\\Temp*)
 | bin span=1m _time
 | mvexpand User
 | search (User!="SYSTEM" AND User!="NT AUTHORITY\\*")
