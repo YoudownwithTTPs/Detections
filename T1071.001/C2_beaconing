@@ -7,4 +7,4 @@ Image IN (C:\\Users\\*, C:\\ProgramData\\*, C:\\Windows\\System32\\*, C:\\Window
 | where count < 4 ```Only report of those processes that connected to port 80 or 443 three times or less in one minute - 20 sec beacon interval```
 | bin span=15m _time ```Next, zoom out and look at the same data set but this time for a period of 15 mins```
 | stats count by _time, SourceIp, User, Image ```Run the same stats as before```
-| where count > 13 ```Only this time, tell me only if those same processes that passed the first stats 
+| where count > 11 ```Only this time, tell me only if those same processes that passed the first stats has continued to do so for twelve times or more over the last 15 mins```
