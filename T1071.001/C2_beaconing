@@ -1,5 +1,9 @@
 index="sysmon" source="WinEventLog:Sysmon" EventCode=3 DestinationPort=443 OR DestinationPort=80 ```All successful http/s connection to ports 80 or 443```
-Image IN (C:\\Users\\*, C:\\ProgramData\\*, C:\\Windows\\System32\\*, C:\\Windows\\Syswow64\\*, C:\\Windows\\Temp*) ```Search is only looking for processes connecting to port 80 or 443 that are running from these paths```
+Image="C:\\Users\\*" OR
+Image="C:\\ProgramData\\*" OR
+Image="C:\\Windows\\System32\\*" OR
+Image="C:\\Windows\\Syswow64\\*" OR
+Image="C:\\Windows\\Temp*" ```Search is only looking for processes connecting to port 80 or 443 that are running from these paths```
 | bin span=1m _time ```search starts by looking at the events within a 1 minute window```
 | mvexpand User ```expands the multi-value User field so we can filter effectively on the field values``` 
 | search (User!="SYSTEM" AND User!="NT AUTHORITY\\*") ```Only include events from process running in the context of the user```
