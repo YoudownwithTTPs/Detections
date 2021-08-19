@@ -1,0 +1,5 @@
+index="sysmon" source="WinEventLog:Sysmon" EventCode=11 
+(TargetFilename="C:\\Users\\*" OR TargetFilename="C:\\ProgramData\\*" OR TargetFilename="C:\\Windows\\System32\\*") TargetFilename="*.dll"
+| eventstats count(TargetFilename) as dllwritten by host, Image ```Create a new field called dllwritten where the value will be a numeric stats count based on host, Image and TargetFilename```
+| where dllwritten < 3 ```Only display values less then 3, adjust this value as you see fit```
+| table _time, host, Image, TargetFilename
