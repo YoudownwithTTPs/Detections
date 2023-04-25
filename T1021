@@ -3,6 +3,8 @@ to find suspicious processes that could indicate lateral movement.
 
 The search can be further refined to look for NTLM or Kerneros specific authentication or specific server-side processes like e.g. wsmprovhost.exe or winrshost.exe
 
+Credit to the following blog post - https://posts.specterops.io/diving-into-the-security-analysts-mind-b1708668e8d4
+
 
 "#event_simpleName" = UserLogon LogonType = 3 OR "#event_simpleName" = ProcessRollup2
 | join({"#event_simpleName" = ProcessRollup2}, max=5, key=AuthenticationId, field=AuthenitcationId, include=[ParentBaseFileName,ImageFileName,CommandLine])
